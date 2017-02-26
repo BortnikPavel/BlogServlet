@@ -1,5 +1,7 @@
 package controllers.Filtres;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +13,13 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "MyFilter")
 public class MyFilter implements Filter {
+    private static Logger logger = Logger.getLogger(MyFilter.class);
+
     public void destroy() {
     }
 
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException{
+        logger.trace("Filter work");
         HttpServletRequest request = (HttpServletRequest)req;
         HttpSession session = request.getSession();
         if(session.getAttribute("nickname")==null){

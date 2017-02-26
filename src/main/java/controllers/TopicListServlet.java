@@ -1,6 +1,7 @@
 package controllers;
 
 import models.pojo.Topic;
+import org.apache.log4j.Logger;
 import services.TopicService;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  * Created by Павел on 26.02.2017.
  */
 public class TopicListServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(TopicListServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -22,7 +24,8 @@ public class TopicListServlet extends HttpServlet {
             req.setAttribute("topics", topics);
             req.getRequestDispatcher("startPage.jsp").forward(req, resp);
         } catch (SQLException e) {
-            e.printStackTrace();
+            req.setAttribute("mess", "Sorry some problem with our system, try later)");
+            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
         }
     }
 

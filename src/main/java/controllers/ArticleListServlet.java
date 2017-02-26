@@ -24,7 +24,8 @@ public class ArticleListServlet extends HttpServlet {
             req.setAttribute("articles", articles);
             req.getRequestDispatcher("/articlesList.jsp").forward(req, resp);
         } catch (SQLException e) {
-            e.printStackTrace();
+            req.setAttribute("mess", "Sorry some problem with our system, try later)");
+            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
         }
     }
 

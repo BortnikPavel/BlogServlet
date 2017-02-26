@@ -1,5 +1,7 @@
 package models.connectors;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,6 +10,7 @@ import java.sql.SQLException;
  * Created by Павел on 25.02.2017.
  */
 public class ConnectionDB {
+    private static Logger logger = Logger.getLogger(ConnectionDB.class);
     private static final String HOST = "jdbc:mysql://localhost:3306/blog";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
@@ -22,6 +25,7 @@ public class ConnectionDB {
     }
 
     public static Connection getConnectionDB(){
+        logger.trace("Get Connection");
         Connection localInstance = connectionDB;
         if (localInstance == null) {
             synchronized (ConnectionDB.class) {

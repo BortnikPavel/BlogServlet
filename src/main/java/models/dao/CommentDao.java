@@ -86,23 +86,33 @@ public class CommentDao {
         Article article = new Article();
         ArticleDao articleDB = new ArticleDao();
         ArrayList<Comment> comments = new ArrayList<Comment>();
-        while (resultSet.next()) {
-            Comment comment = new Comment();
-            comment.setId(resultSet.getInt(1));
-            comment.setText(resultSet.getString(2));
-            comment.setDate(resultSet.getString(3));
-            user = (User) userDB.getUserById(comment.getId());
-            comment.setUser(user);
-            article = (Article) articleDB.getArticleById(comment.getId());
-            comment.setArticle(article);
-            comments.add(comment);
+        try {
+            while (resultSet.next()) {
+                Comment comment = new Comment();
+                comment.setId(resultSet.getInt(1));
+                comment.setText(resultSet.getString(2));
+                comment.setDate(resultSet.getString(3));
+                user = (User) userDB.getUserById(comment.getId());
+                comment.setUser(user);
+                article = (Article) articleDB.getArticleById(comment.getId());
+                comment.setArticle(article);
+                comments.add(comment);
+            }
+        }catch (SQLException e){
+            logger.error(e);
+            throw new SQLException();
         }
         return comments;
     }
 
     public static void deleteComment() throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
-        Statement statement = connection.createStatement();
-        statement.execute("TRUNCATE TABLE comments");
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("TRUNCATE TABLE comments");
+        }catch (SQLException e){
+            logger.error(e);
+            throw new SQLException();
+        }
     }
 }

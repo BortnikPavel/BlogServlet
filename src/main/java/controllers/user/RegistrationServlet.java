@@ -44,7 +44,8 @@ public class RegistrationServlet extends HttpServlet {
                 }
             }
         } catch (SQLException e) {
-                e.printStackTrace();
+            req.setAttribute("mess", "Sorry some problem with our system, try later)");
+            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
         }
     }
 }
