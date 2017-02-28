@@ -1,6 +1,7 @@
 package models.dao;
 
 
+import common.exceptions.MyException;
 import models.connectors.ConnectionDB;
 import models.pojo.Article;
 import models.pojo.Topic;
@@ -15,41 +16,50 @@ import java.util.ArrayList;
  */
 public class ArticleDao {
     private static Logger logger = Logger.getLogger(ArticleDao.class);
-    public static void addArticle(Article article) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
-            statement.execute("INSERT INTO articles " +
-                    "(id, text,publicationdate, userId) " +
-                    "VALUES (\"" + article.getId() + "\", \"" + article.getTextArticle() + "\", \"" + article.getDatePublication() +
-                    "\"" + article.getUser().getId() + "\", \"" + article.getTopic().getId() +
-                    "\")");
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new SQLException();
-        }
+    public static boolean addArticle(Article article) throws MyException {
+        try{
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO articles " +
+                "(title, text, publicationdate, userId, topicId) " +
+                "VALUES (?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, article.getTitle());
+            preparedStatement.setString(2, article.getTextArticle());
+            preparedStatement.setString(3, article.getDatePublication());
+            preparedStatement.setInt(4, article.getUser().getId());
+            preparedStatement.setInt(5, article.getTopic().getId());
+            if(preparedStatement.execute()){
+                return true;
+            }
+            } catch (SQLException e) {
+                logger.error(e);
+            throw new MyException("Sorry, we have some problem with our system!");
+            }
+        return false;
     }
 
-    public static void deleteArticle() throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static boolean deleteArticle(Article article) throws MyException {
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("TRUNCATE TABLE articles");
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM articles WHERE id = ?");
+            preparedStatement.setInt(1, article.getId());
+            if(preparedStatement.execute()){
+                return true;
+            }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
+        return false;
     }
 
-    public static Article getArticleById(int id) throws SQLException {
+    public static Article getArticleById(int id) throws MyException {
         Article article = new Article();
         User user = new User();
         UserDao userDB = new UserDao();
         Topic topic = new Topic();
         TopicDao topicDB =new TopicDao();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM articles where id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -69,51 +79,51 @@ public class ArticleDao {
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return article;
     }
 
-    public static ArrayList<Article> getArticleByUserId(int userId) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static ArrayList<Article> getArticleByUserId(int userId) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM articles WHERE userId = ?");
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return getArticles(resultSet);
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static ArrayList<Article> getArticleByTopicId(int topicId) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static ArrayList<Article> getArticleByTopicId(int topicId) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM articles WHERE topicId = ?");
             preparedStatement.setInt(1, topicId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return getArticles(resultSet);
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
 
-    public static ArrayList<Article> getAllArticle() throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static ArrayList<Article> getAllArticle() throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM articles");
             ResultSet resultSet = preparedStatement.executeQuery();
             return getArticles(resultSet);
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    private static ArrayList<Article> getArticles(ResultSet resultSet) throws SQLException {
+    private static ArrayList<Article> getArticles(ResultSet resultSet) throws MyException {
         User user;
         Topic topic;
         ArrayList<Article> articles = new ArrayList<>();
@@ -136,7 +146,7 @@ public class ArticleDao {
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return articles;
     }

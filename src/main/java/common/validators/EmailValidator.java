@@ -1,5 +1,6 @@
 package common.validators;
 
+import common.exceptions.MyException;
 import models.dao.UserDao;
 
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class EmailValidator {
     }
 
 
-    public static boolean validate(final String hex) throws SQLException {
+    public static boolean validate(final String hex) throws MyException {
         matcher = pattern.matcher(hex);
         boolean flag = matcher.matches();
         if(flag&& UserDao.isEmailThere(hex)){

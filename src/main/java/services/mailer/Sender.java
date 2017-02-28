@@ -4,6 +4,8 @@ package services.mailer;
  * Created by Павел on 27.02.2017.
  */
 
+import common.exceptions.MyException;
+import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 
 import javax.mail.*;
@@ -12,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class Sender {
+    private static Logger logger = Logger.getLogger(Sender.class);
     private final String username = "bortnikpp@gmail.com";
     private final String password = "Pashabirthday15962841988";
     private String to;
@@ -22,7 +25,7 @@ public class Sender {
         this.to = to;
     }
 
-    public void append() {
+    public void send() throws MyException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", true);
         props.put("mail.smtp.starttls.enable", true);
@@ -51,8 +54,9 @@ public class Sender {
             System.out.println("Sending");
             Transport.send(message);
             System.out.println("Done");
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        }catch (MessagingException e){
+            logger.error(e);
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 }

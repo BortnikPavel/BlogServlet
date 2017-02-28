@@ -1,5 +1,6 @@
 package controllers.user;
 
+import common.exceptions.MyException;
 import common.validators.EmailValidator;
 import common.validators.NickNameValidator;
 import models.pojo.User;
@@ -45,7 +46,7 @@ public class RegistrationServlet extends HttpServlet {
             } else {
                 req.getRequestDispatcher("/registration.jsp").forward(req,resp);
             }
-        } catch (SQLException e) {
+        } catch (MyException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
             req.getRequestDispatcher("topicsList.jsp").forward(req,resp);
         }

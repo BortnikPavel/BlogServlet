@@ -1,7 +1,7 @@
 package models.dao;
 
 
-import com.mysql.jdbc.ConnectionFeatureNotAvailableException;
+import common.exceptions.MyException;
 import models.connectors.ConnectionDB;
 import models.pojo.Article;
 import models.pojo.Comment;
@@ -18,8 +18,8 @@ public class CommentDao {
     private static Logger logger = Logger.getLogger(CommentDao.class);
 
     public static boolean addComment(Comment comment) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO comments " +
                     "(text, date, userId, articleId) " +
                     "VALUES (?, ?, ?, ?)");
@@ -38,14 +38,14 @@ public class CommentDao {
         }
     }
 
-    public static Comment getCommentById(int id) throws SQLException {
+    public static Comment getCommentById(int id) throws MyException {
         User user;
         UserDao userDao = new UserDao();
         Article article;
         ArticleDao articleDB = new ArticleDao();
         Comment comment = new Comment();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments where id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -60,36 +60,36 @@ public class CommentDao {
             }
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return comment;
     }
 
-    public static ArrayList<Comment> getAllComments() throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static ArrayList<Comment> getAllComments() throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments");
             ResultSet resultSet = preparedStatement.executeQuery();
             return getComments(resultSet);
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static ArrayList<Comment> getAllCommentsByUserId(int id) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static ArrayList<Comment> getAllCommentsByUserId(int id) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE userId = " + id);
             ResultSet resultSet = preparedStatement.executeQuery();
             return getComments(resultSet);
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    private static ArrayList<Comment> getComments(ResultSet resultSet) throws SQLException {
+    private static ArrayList<Comment> getComments(ResultSet resultSet) throws MyException {
         User user = new User();
         UserDao userDB = new UserDao();
         Article article = new Article();
@@ -109,20 +109,24 @@ public class CommentDao {
             }
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return comments;
     }
 
-    public static void deleteComment() throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static boolean deleteComment(Comment comment) throws MyException {
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("TRUNCATE TABLE comments");
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE id = ?");
+            preparedStatement.setInt(1, comment.getId());
+            if(preparedStatement.execute()){
+                return true;
+            }
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
+        return false;
     }
 }
 

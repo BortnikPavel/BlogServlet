@@ -1,6 +1,7 @@
 package models.dao;
 
 
+import common.exceptions.MyException;
 import models.connectors.ConnectionDB;
 import models.pojo.Topic;
 import org.apache.log4j.Logger;
@@ -13,23 +14,23 @@ import java.util.ArrayList;
  */
 public class TopicDao{
     private static Logger logger = Logger.getLogger(TopicDao.class);
-    public static Topic addTopic(Topic topic) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static Topic addTopic(Topic topic) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO topics SET (name) VALUES (?)");
             preparedStatement.setString(1,topic.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
             return TopicDao.getTopicByName(topic.getName());
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static Topic getTopicByName(String name) throws SQLException {
+    public static Topic getTopicByName(String name) throws MyException {
         Topic topic = new Topic();
-        Connection connection = ConnectionDB.getConnectionDB();
         try{
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM topics WHERE name = ?");
             preparedStatement.setString(1,name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -42,25 +43,25 @@ public class TopicDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static void deleteTopic(Topic topic) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static void deleteTopic(Topic topic) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM topics WHERE id = ?");
             preparedStatement.setInt(1,topic.getId());
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static Topic getTopicById(int id) throws SQLException {
+    public static Topic getTopicById(int id) throws MyException {
         Topic topic = new Topic();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM topics where id = ?");
             preparedStatement.setInt(1, id);
@@ -70,15 +71,15 @@ public class TopicDao{
             topic.setName(resultSet.getString(2));
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return topic;
     }
 
-    public static ArrayList<Topic> getAllTopics() throws SQLException {
+    public static ArrayList<Topic> getAllTopics() throws MyException {
         ArrayList<Topic> topics = new ArrayList<Topic>();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM topics");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -90,7 +91,7 @@ public class TopicDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return topics;
     }

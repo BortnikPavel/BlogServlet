@@ -1,5 +1,6 @@
 package models.connectors;
 
+import common.exceptions.MyException;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -19,12 +20,12 @@ public class ConnectionDB {
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            logger.error(e);
         }
     }
 
-    public static Connection getConnectionDB(){
+    public static Connection getConnectionDB() throws SQLException {
         logger.trace("Get Connection");
         Connection localInstance = connectionDB;
         if (localInstance == null) {
@@ -35,7 +36,8 @@ public class ConnectionDB {
                         connectionDB = localInstance = DriverManager.getConnection(HOST, USERNAME, PASSWORD);
                         System.out.println("Connection is open");
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        logger.error(e);
+                        throw new SQLException();
                     }
                 }
             }

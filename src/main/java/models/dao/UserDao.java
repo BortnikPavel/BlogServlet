@@ -1,5 +1,6 @@
 package models.dao;
 
+import common.exceptions.MyException;
 import models.connectors.ConnectionDB;
 import models.pojo.User;
 import org.apache.log4j.Logger;
@@ -16,10 +17,10 @@ public class UserDao{
     private static final String SQL_ADD_USER = "INSERT INTO users " +
             "(firstname, lastname, email, nickname, password, flagmail) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    public static User addUser(User user) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static User addUser(User user) throws MyException {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("");
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER);
             preparedStatement.setString(1,user.getFirstName());
             preparedStatement.setString(2,user.getLastName());
             preparedStatement.setString(3,user.getEmail());
@@ -29,13 +30,13 @@ public class UserDao{
             return getUserByLogAndPass(user.getNickName(), user.getPassword());
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static boolean updateFlag(User user) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static boolean updateFlag(User user) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET flagmail = ? " +
                     "where id = ?");
             preparedStatement.setInt(1, user.getFlagMail());
@@ -44,13 +45,13 @@ public class UserDao{
             return true;
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static User updateUser(User user) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static User updateUser(User user) throws MyException {
             try {
+                Connection connection = ConnectionDB.getConnectionDB();
                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET firstname = ?," +
                         " lastname = ?, email = ?, nickname = ?, password = ? " +
                         "where id = ?");
@@ -64,24 +65,28 @@ public class UserDao{
                 return getUserById(user.getId());
             }catch (SQLException e){
                 logger.error(e);
-                throw new SQLException();
+                throw new MyException("Sorry, we have some problem with our system!");
             }
     }
 
-    public void deleteUser(User user) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public boolean deleteUser(User user) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user WHERE id = ?");
             preparedStatement.setInt(1,user.getId());
+            if(preparedStatement.execute()){
+                return true;
+            }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
+        return false;
     }
 
-    public static boolean isEmailThere(String email) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static boolean isEmailThere(String email) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -92,13 +97,13 @@ public class UserDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static boolean isNickThere(String nickName) throws SQLException {
-        Connection connection = ConnectionDB.getConnectionDB();
+    public static boolean isNickThere(String nickName) throws MyException {
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             preparedStatement.setString(1,nickName);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -109,29 +114,29 @@ public class UserDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
 
     }
 
-    public static User getUserByLogAndPass(String nickname, String password) throws SQLException {
+    public static User getUserByLogAndPass(String nickname, String password) throws MyException {
         User user;
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE nickname = ? AND password = ?" );
             ResultSet resultSet = preparedStatement.executeQuery();
             user = getUser(resultSet);
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return user;
     }
 
-    public static User getUserById(int id) throws SQLException {
+    public static User getUserById(int id) throws MyException {
         User user = new User();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users where id = ?");
             preparedStatement.setInt(1, id);
@@ -139,15 +144,15 @@ public class UserDao{
             user = getUser(resultSet);
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return user;
     }
 
-    public static ArrayList getAllUsers() throws SQLException {
+    public static ArrayList getAllUsers() throws MyException {
         ArrayList<User> users = new ArrayList<User>();
-        Connection connection = ConnectionDB.getConnectionDB();
         try {
+            Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -166,12 +171,12 @@ public class UserDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return users;
     }
 
-    public static User getUser(ResultSet resultSet) throws SQLException {
+    public static User getUser(ResultSet resultSet) throws MyException {
         User user =  new User();
         try {
             if (resultSet.next()) {
@@ -185,7 +190,7 @@ public class UserDao{
             }
         }catch (SQLException e){
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
         return user;
     }

@@ -1,10 +1,12 @@
 package controllers.user;
 
+import common.exceptions.MyException;
 import models.pojo.User;
 import org.apache.log4j.Logger;
 import services.UserService;
 import services.mailer.Sender;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -36,14 +38,14 @@ public class LoginServlet extends HttpServlet {
                 if(user.getNickName().equals("admin")&&user.getFlagMail()==1){
                     Sender sender = new Sender();
                     sender.setTo(user.getEmail());
-                    sender.append();
+                    sender.send();
                 }
                 resp.sendRedirect("/welcomePage.jsp");
             }else{
                 logger.trace("can not find");
                 req.getRequestDispatcher("/login.jsp").forward(req, resp);
             }
-        } catch (SQLException e) {
+        } catch (MyException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
             req.getRequestDispatcher("login.jsp").forward(req,resp);
         }

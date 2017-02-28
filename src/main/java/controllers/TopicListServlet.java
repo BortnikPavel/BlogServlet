@@ -1,5 +1,6 @@
 package controllers;
 
+import common.exceptions.MyException;
 import models.pojo.Topic;
 import org.apache.log4j.Logger;
 import services.TopicService;
@@ -23,7 +24,7 @@ public class TopicListServlet extends HttpServlet {
             ArrayList<Topic> topics = TopicService.getAllTopics();
             req.setAttribute("topics", topics);
             req.getRequestDispatcher("topicsList.jsp").forward(req, resp);
-        } catch (SQLException e) {
+        } catch (MyException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
             req.getRequestDispatcher("topicsList.jsp").forward(req,resp);
         }

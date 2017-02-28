@@ -1,6 +1,8 @@
 package controllers.user;
 
+import common.exceptions.MyException;
 import models.pojo.User;
+import org.apache.log4j.Logger;
 import services.UserService;
 
 import javax.servlet.ServletException;
@@ -23,15 +25,15 @@ public class LogoutServlet extends HttpServlet {
             user.setFlagMail(1);
             try {
                 UserService.updateFlag(user);
-            } catch (SQLException e) {
-               //e.printStackTrace();
+            } catch (MyException e) {
+
             }
             session.invalidate();
         }else if(session != null&&user!=null&&user.getFlagMail()==1){
             user.setFlagMail(0);
             try {
                 UserService.updateFlag(user);
-            } catch (SQLException e) {
+            } catch (MyException e) {
                 e.printStackTrace();
             }
             session.invalidate();

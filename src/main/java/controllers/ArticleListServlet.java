@@ -1,5 +1,6 @@
 package controllers;
 
+import common.exceptions.MyException;
 import models.pojo.Article;
 import services.ArticleService;
 
@@ -23,7 +24,7 @@ public class ArticleListServlet extends HttpServlet {
             ArrayList<Article> articles = ArticleService.getArticlesByTopicId(id);
             req.setAttribute("articles", articles);
             req.getRequestDispatcher("/articlesList.jsp").forward(req, resp);
-        } catch (SQLException e) {
+        } catch (MyException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
             req.getRequestDispatcher("topicsList.jsp").forward(req,resp);
         }
