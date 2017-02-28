@@ -3,6 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <welcome-file-list>
+        <welcome-file>welcomePage.jsp</welcome-file>
+    </welcome-file-list>
+
+
     <filter>
         <filter-name>MyFilter</filter-name>
         <filter-class>controllers.Filtres.MyFilter</filter-class>
@@ -14,7 +19,15 @@
         <url-pattern>/listtopic.jsp</url-pattern>
     </filter-mapping>
 
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controllers.user.LogoutServlet</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>Registration</servlet-name>
@@ -43,7 +56,7 @@
 
     <servlet-mapping>
         <servlet-name>StartPage</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/startPage</url-pattern>
     </servlet-mapping>
     
     <servlet>

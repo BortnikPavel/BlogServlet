@@ -19,6 +19,10 @@ public class UserService {
         }
     }
 
+    public static boolean updateFlag(User user) throws SQLException {
+        return UserDao.updateFlag(user);
+    }
+
     public static User registration(User user) throws SQLException {
         UserService.user = UserDao.addUser(user);
         if(UserService.user != null){

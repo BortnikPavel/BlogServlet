@@ -12,6 +12,16 @@ public class User {
     private String email;
     private String nickName;
     private String password;
+    private int flagMail;
+
+    public int getFlagMail() {
+        return flagMail;
+    }
+
+    public void setFlagMail(int flagMail) {
+        this.flagMail = flagMail;
+    }
+
     private ArrayList<Article> articles;
     private ArrayList<Comment> comments;
 

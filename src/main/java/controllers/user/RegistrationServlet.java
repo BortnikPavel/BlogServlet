@@ -42,10 +42,12 @@ public class RegistrationServlet extends HttpServlet {
                 } else {
                     req.getRequestDispatcher("/registration.jsp").forward(req,resp);
                 }
+            } else {
+                req.getRequestDispatcher("/registration.jsp").forward(req,resp);
             }
         } catch (SQLException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
-            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
+            req.getRequestDispatcher("topicsList.jsp").forward(req,resp);
         }
     }
 }

@@ -1,7 +1,9 @@
 package controllers.user;
 
+import models.pojo.User;
 import org.apache.log4j.Logger;
 import services.UserService;
+import services.mailer.Sender;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -16,14 +18,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on get LoginServlet");
-        String action = req.getParameter("action");
-        if(action == null) {
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
-        }else if(action.equalsIgnoreCase("logout")){
-            HttpSession session = req.getSession();
-            session.removeAttribute("nickname");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
-        }
+        req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,23 +26,26 @@ public class LoginServlet extends HttpServlet {
         logger.trace("on post");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        User user;
         try {
-            if(password.length()>0 && login.length()>3 && UserService.authorize(login,password) != null) {
+            if(password.length()>0 && login.length()>3 && (user=UserService.authorize(login,password)) != null) {
                 logger.trace("find");
                 HttpSession session = req.getSession();
-                session.setAttribute("nickname", "avtoriz");
+                session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60*60);
-                Cookie userName = new Cookie("nickname", login);
-                userName.setMaxAge(60*60);
-                resp.addCookie(userName);
-                resp.sendRedirect("/startPage.jsp");
+                if(user.getNickName().equals("admin")&&user.getFlagMail()==1){
+                    Sender sender = new Sender();
+                    sender.setTo(user.getEmail());
+                    sender.append();
+                }
+                resp.sendRedirect("/welcomePage.jsp");
             }else{
                 logger.trace("can not find");
                 req.getRequestDispatcher("/login.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
-            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
+            req.getRequestDispatcher("login.jsp").forward(req,resp);
         }
     }
 }

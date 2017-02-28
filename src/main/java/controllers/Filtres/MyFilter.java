@@ -22,7 +22,7 @@ public class MyFilter implements Filter {
         logger.trace("Filter work");
         HttpServletRequest request = (HttpServletRequest)req;
         HttpSession session = request.getSession();
-        if(session.getAttribute("nickname")==null){
+        if(session.getAttribute("user")==null){
             request.getRequestDispatcher("login.jsp").forward(req, resp);
         }else {
             chain.doFilter(req, resp);

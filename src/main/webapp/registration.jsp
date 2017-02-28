@@ -8,12 +8,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Blog</title>
+    <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/CSS/style.css" />
     <script type="text/javascript" src="/JS/placeholder.js"></script>
 </head>
 <body>
-<form action="/registration" method="post" id="slick-login">
+<div id="top_bar_black">
+    <div id="logo_container">
+        <div id="logo_image">
+        </div>
+        <div id="nav_block">
+            <a class="nav_button" href="/welcomePage.jsp">Home</a>
+            <a class="nav_button" href="/startPage">Topics</a>
+            <a class="nav_button" href="/login">Login</a>
+            <a class="nav_button" href="/registration">Registration</a>
+            <a class="nav_button" href="/logout">Logout</a>
+        </div>
+    </div>
+</div>
+<form action="/registration" method="post" id="slick-login" class="registration">
     <label for= "firstName">FirstName:</label>
     <input type="text" name="firstName" id="firstName" value="" class="placeholder" placeholder="Firstname">
     <br>
@@ -30,6 +45,5 @@
     <input type="password" name="password" id="password" value="" class="placeholder" placeholder="Password">
     <input type="submit" value="Sign up" formmethod="post">
 </form>
-<a href="/login">Авторизация</a>
 </body>
 </html>

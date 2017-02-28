@@ -22,10 +22,10 @@ public class TopicListServlet extends HttpServlet {
         try {
             ArrayList<Topic> topics = TopicService.getAllTopics();
             req.setAttribute("topics", topics);
-            req.getRequestDispatcher("startPage.jsp").forward(req, resp);
+            req.getRequestDispatcher("topicsList.jsp").forward(req, resp);
         } catch (SQLException e) {
             req.setAttribute("mess", "Sorry some problem with our system, try later)");
-            req.getRequestDispatcher("startPage.jsp").forward(req,resp);
+            req.getRequestDispatcher("topicsList.jsp").forward(req,resp);
         }
     }
 

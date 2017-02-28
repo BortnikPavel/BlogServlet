@@ -1,18 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: Павел
-  Date: 26.02.2017
-  Time: 16:17
+  Date: 25.02.2017
+  Time: 17:48
   To change this template use File | Settings | File Templates.
 --%>
-<!DOCTYPE html>
+<%@ taglib prefix="c"
+           uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
-    <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Blog</title>
     <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/CSS/style.css" />
-    <script type="text/javascript" src="/JS/placeholder.js"></script>
 </head>
 <body>
 <div id="top_bar_black">
@@ -28,10 +28,25 @@
         </div>
     </div>
 </div>
-<form action="/login?action=login" method="post" id="slick-login">
-    <label for="login">Login:</label><input type="text" id="login" name="login" class="placeholder" placeholder="admin@example.com">
-    <label for="password">Password:</label><input type="password" id="password" name="password" class="placeholder" placeholder="Password">
-    <input type="submit" value="Login">
-</form>
+
+<div id="content_container">
+    <div id="header">
+        <div class="header_content_mainline">
+            Добро пожаловать в наш блог)
+        </div>
+        <div id="header_content_tagline">
+            Какой-то приветственный текст!
+        </div>
+    </div>
+    <div id="header_lower">
+        <ol class="pills">
+            <c:forEach items="${topics}" var="topic">
+                <li><a href="/articles?id=${topic.id}"><c:out value="${topic.name}"></c:out></a></li>
+            </c:forEach>
+        </ol>
+    </div>
+</div>
+
+
 </body>
 </html>

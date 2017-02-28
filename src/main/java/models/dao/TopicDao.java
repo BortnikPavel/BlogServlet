@@ -13,25 +13,44 @@ import java.util.ArrayList;
  */
 public class TopicDao{
     private static Logger logger = Logger.getLogger(TopicDao.class);
-    public static void addTopic(Topic topic) throws SQLException {
+    public static Topic addTopic(Topic topic) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("INSERT INTO topics " +
-                    "(id, name) " +
-                    "VALUES (\"" + topic.getId() + "\", \"" + topic.getName() + "\")");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO topics SET (name) VALUES (?)");
+            preparedStatement.setString(1,topic.getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return TopicDao.getTopicByName(topic.getName());
         }catch (SQLException e){
             logger.error(e);
             throw new SQLException();
         }
-
     }
 
-    public static void deleteTopic() throws SQLException {
+    public static Topic getTopicByName(String name) throws SQLException {
+        Topic topic = new Topic();
+        Connection connection = ConnectionDB.getConnectionDB();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM topics WHERE name = ?");
+            preparedStatement.setString(1,name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                topic.setId(resultSet.getInt(1));
+                topic.setName(resultSet.getString(2));
+                return topic;
+            }else {
+                return null;
+            }
+        }catch (SQLException e){
+            logger.error(e);
+            throw new SQLException();
+        }
+    }
+
+    public static void deleteTopic(Topic topic) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("TRUNCATE TABLE topics");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM topics WHERE id = ?");
+            preparedStatement.setInt(1,topic.getId());
         }catch (SQLException e){
             logger.error(e);
             throw new SQLException();

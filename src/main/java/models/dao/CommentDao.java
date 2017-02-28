@@ -1,6 +1,7 @@
 package models.dao;
 
 
+import com.mysql.jdbc.ConnectionFeatureNotAvailableException;
 import models.connectors.ConnectionDB;
 import models.pojo.Article;
 import models.pojo.Comment;
@@ -15,24 +16,32 @@ import java.util.ArrayList;
  */
 public class CommentDao {
     private static Logger logger = Logger.getLogger(CommentDao.class);
-    public static void addComment(Comment comment) throws SQLException {
+
+    public static boolean addComment(Comment comment) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("INSERT INTO comments " +
-                    "(id, text, date, userId, articleId) " +
-                    "VALUES (\"" + comment.getId() + "\", \"" + comment.getText() + "\", \"" + comment.getDate() +
-                    "\", \"" + comment.getUser().getId() + "\", \"" + comment.getArticle().getId() + "\")");
-        }catch (SQLException e){
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO comments " +
+                    "(text, date, userId, articleId) " +
+                    "VALUES (?, ?, ?, ?)");
+            preparedStatement.setString(1, comment.getText());
+            preparedStatement.setString(2, comment.getDate());
+            preparedStatement.setInt(3, comment.getUser().getId());
+            preparedStatement.setInt(4, comment.getArticle().getId());
+            if (preparedStatement.execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
     }
 
     public static Comment getCommentById(int id) throws SQLException {
-        User user = new User();
+        User user;
         UserDao userDao = new UserDao();
-        Article article = new Article();
+        Article article;
         ArticleDao articleDB = new ArticleDao();
         Comment comment = new Comment();
         Connection connection = ConnectionDB.getConnectionDB();
@@ -44,12 +53,12 @@ public class CommentDao {
                 comment.setId(resultSet.getInt(1));
                 comment.setText(resultSet.getString(2));
                 comment.setDate(resultSet.getString(3));
-                user = (User) userDao.getUserById(comment.getId());
+                user = userDao.getUserById(comment.getId());
                 comment.setUser(user);
-                article = (Article) articleDB.getArticleById(comment.getId());
+                article = articleDB.getArticleById(comment.getId());
                 comment.setArticle(article);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
@@ -62,7 +71,7 @@ public class CommentDao {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments");
             ResultSet resultSet = preparedStatement.executeQuery();
             return getComments(resultSet);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
@@ -74,7 +83,7 @@ public class CommentDao {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE userId = " + id);
             ResultSet resultSet = preparedStatement.executeQuery();
             return getComments(resultSet);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
@@ -92,13 +101,13 @@ public class CommentDao {
                 comment.setId(resultSet.getInt(1));
                 comment.setText(resultSet.getString(2));
                 comment.setDate(resultSet.getString(3));
-                user = (User) userDB.getUserById(comment.getId());
+                user = userDB.getUserById(comment.getId());
                 comment.setUser(user);
-                article = (Article) articleDB.getArticleById(comment.getId());
+                article = articleDB.getArticleById(comment.getId());
                 comment.setArticle(article);
                 comments.add(comment);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
@@ -110,9 +119,10 @@ public class CommentDao {
         try {
             Statement statement = connection.createStatement();
             statement.execute("TRUNCATE TABLE comments");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             logger.error(e);
             throw new SQLException();
         }
     }
 }
+

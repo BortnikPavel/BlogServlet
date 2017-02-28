@@ -6,22 +6,42 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Павел on 25.02.2017.
  */
 public class UserDao{
     private static Logger logger = Logger.getLogger(UserDao.class);
+    private static final String SQL_ADD_USER = "INSERT INTO users " +
+            "(firstname, lastname, email, nickname, password, flagmail) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
     public static User addUser(User user) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("INSERT INTO users " +
-                    "(firstname, lastname, email, nickname, password) " +
-                    "VALUES (\"" + user.getFirstName() + "\", \"" + user.getLastName() +
-                    "\", \"" + user.getEmail() + "\", \"" + user.getNickName() + "\", \"" +
-                    user.getPassword() + "\")");
+            PreparedStatement preparedStatement = connection.prepareStatement("");
+            preparedStatement.setString(1,user.getFirstName());
+            preparedStatement.setString(2,user.getLastName());
+            preparedStatement.setString(3,user.getEmail());
+            preparedStatement.setString(4,user.getNickName());
+            preparedStatement.setString(5,user.getPassword());
+            preparedStatement.setInt(6,user.getNickName().hashCode());
             return getUserByLogAndPass(user.getNickName(), user.getPassword());
+        }catch (SQLException e){
+            logger.error(e);
+            throw new SQLException();
+        }
+    }
+
+    public static boolean updateFlag(User user) throws SQLException {
+        Connection connection = ConnectionDB.getConnectionDB();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET flagmail = ? " +
+                    "where id = ?");
+            preparedStatement.setInt(1, user.getFlagMail());
+            preparedStatement.setInt(2, user.getId());
+            preparedStatement.executeUpdate();
+            return true;
         }catch (SQLException e){
             logger.error(e);
             throw new SQLException();
@@ -51,8 +71,8 @@ public class UserDao{
     public void deleteUser(User user) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            statement.execute("DELETE FROM user WHERE id = " + user.getId());
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user WHERE id = ?");
+            preparedStatement.setInt(1,user.getId());
         }catch (SQLException e){
             logger.error(e);
             throw new SQLException();
@@ -62,9 +82,9 @@ public class UserDao{
     public static boolean isEmailThere(String email) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE email = \"" +
-                    email + "\"");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return false;
             } else {
@@ -79,13 +99,13 @@ public class UserDao{
     public static boolean isNickThere(String nickName) throws SQLException {
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE nickname = \"" +
-                    nickName + "\"");
-            if (resultSet.next()) {
-                return false;
-            } else {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
+            preparedStatement.setString(1,nickName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
                 return true;
+            } else {
+                return false;
             }
         }catch (SQLException e){
             logger.error(e);
@@ -98,9 +118,8 @@ public class UserDao{
         User user;
         Connection connection = ConnectionDB.getConnectionDB();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE nickname = \"" +
-                    nickname + "\" AND password = \"" + password + "\"");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE nickname = ? AND password = ?" );
+            ResultSet resultSet = preparedStatement.executeQuery();
             user = getUser(resultSet);
         }catch (SQLException e){
             logger.error(e);
@@ -117,14 +136,7 @@ public class UserDao{
                     "SELECT * FROM users where id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user.setId(resultSet.getInt(1));
-                user.setFirstName(resultSet.getString(2));
-                user.setLastName(resultSet.getString(3));
-                user.setEmail(resultSet.getString(4));
-                user.setNickName(resultSet.getString(5));
-                user.setPassword(resultSet.getString(6));
-            }
+            user = getUser(resultSet);
         }catch (SQLException e){
             logger.error(e);
             throw new SQLException();
@@ -147,6 +159,7 @@ public class UserDao{
                 user.setEmail(resultSet.getString(4));
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
+                user.setFlagMail(resultSet.getInt(7));
                 user.setArticles(ArticleDao.getArticleByUserId(user.getId()));
                 user.setComments(CommentDao.getAllCommentsByUserId(user.getId()));
                 users.add(user);
@@ -168,8 +181,7 @@ public class UserDao{
                 user.setEmail(resultSet.getString(4));
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
-                user.setArticles(ArticleDao.getArticleByUserId(user.getId()));
-                user.setComments(CommentDao.getAllCommentsByUserId(user.getId()));
+                user.setFlagMail(resultSet.getInt(7));
             }
         }catch (SQLException e){
             logger.error(e);
