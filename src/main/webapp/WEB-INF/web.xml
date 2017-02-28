@@ -22,6 +22,11 @@
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>controllers.user.LogoutServlet</servlet-class>
+
+        <init-param>
+            <param-name>user</param-name>
+            <param-value>admin</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>

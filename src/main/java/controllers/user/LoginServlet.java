@@ -7,6 +7,7 @@ import services.UserService;
 import services.mailer.Sender;
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -20,6 +21,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on get LoginServlet");
+        ServletConfig config = getServletConfig();
+        String str = config.getInitParameter("user");
+        //String[] strings = {config.getInitParameter("user"), config.getInitParameter("flag")};
+        System.out.println(str);
+        //System.out.println(strings[1]);
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
@@ -35,11 +41,11 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60*60);
-                if(user.getNickName().equals("admin")&&user.getFlagMail()==1){
+                //if(user.getNickName().equals(strings[0])&&strings[1].equals("send")){
                     Sender sender = new Sender();
                     sender.setTo(user.getEmail());
                     sender.send();
-                }
+                //}
                 resp.sendRedirect("/welcomePage.jsp");
             }else{
                 logger.trace("can not find");
