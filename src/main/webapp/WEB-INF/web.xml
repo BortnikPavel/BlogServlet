@@ -23,10 +23,7 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>controllers.user.LogoutServlet</servlet-class>
 
-        <init-param>
-            <param-name>user</param-name>
-            <param-value>admin</param-value>
-        </init-param>
+
     </servlet>
 
     <servlet-mapping>
@@ -47,6 +44,17 @@
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>controllers.user.LoginServlet</servlet-class>
+
+        <init-param>
+            <param-name>user</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>flag</param-name>
+            <param-value>send</param-value>
+        </init-param>
+
     </servlet>
 
     <servlet-mapping>

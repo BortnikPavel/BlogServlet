@@ -21,17 +21,14 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on get LoginServlet");
-        ServletConfig config = getServletConfig();
-        String str = config.getInitParameter("user");
-        //String[] strings = {config.getInitParameter("user"), config.getInitParameter("flag")};
-        System.out.println(str);
-        //System.out.println(strings[1]);
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on post");
+        ServletConfig config = getServletConfig();
+        String[] strings = {config.getInitParameter("user"), config.getInitParameter("flag")};
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         User user;
@@ -41,11 +38,11 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60*60);
-                //if(user.getNickName().equals(strings[0])&&strings[1].equals("send")){
+                if(user.getNickName().equals(strings[0])&&strings[1].equals("send")){
                     Sender sender = new Sender();
                     sender.setTo(user.getEmail());
                     sender.send();
-                //}
+                }
                 resp.sendRedirect("/welcomePage.jsp");
             }else{
                 logger.trace("can not find");
