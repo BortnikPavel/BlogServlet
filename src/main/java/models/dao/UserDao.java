@@ -124,6 +124,8 @@ public class UserDao{
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE nickname = ? AND password = ?" );
+            preparedStatement.setString(1, nickname);
+            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             user = getUser(resultSet);
         }catch (SQLException e){

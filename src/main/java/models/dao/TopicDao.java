@@ -17,7 +17,7 @@ public class TopicDao{
     public static Topic addTopic(Topic topic) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO topics SET (name) VALUES (?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO topics (name) VALUES (?)");
             preparedStatement.setString(1,topic.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
             return TopicDao.getTopicByName(topic.getName());
