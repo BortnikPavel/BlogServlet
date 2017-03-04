@@ -22,7 +22,14 @@
           <element id="library" level="project" name="Gradle: jstl:jstl:1.2" />
           <element id="library" level="project" name="Gradle: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.0" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.3.5.RELEASE" />
           <element id="library" level="project" name="Gradle: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.3.5.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.3.5.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.3.5.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.3.5.RELEASE" />
+          <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.3.5.RELEASE/6641daccf2fddafc8358144f3a4f999130fdf144/spring-web-4.3.5.RELEASE.jar" />
         </element>
       </element>
     </root>

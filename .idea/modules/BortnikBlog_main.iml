@@ -11,6 +11,13 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/../../src/main/webapp/WEB-INF/beans.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
     <facet type="web" name="Web Gradle : BortnikBlog-1.0-SNAPSHOT.war">
       <configuration>
         <descriptors>
@@ -36,6 +43,13 @@
     <orderEntry type="library" name="Gradle: jstl:jstl:1.2" level="project" />
     <orderEntry type="library" name="Gradle: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Gradle: com.sun.mail:javax.mail:1.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.3.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.3.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.3.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.3.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-core:4.3.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:4.3.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
   </component>
 </module>

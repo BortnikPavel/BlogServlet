@@ -10,7 +10,7 @@
 
     <filter>
         <filter-name>MyFilter</filter-name>
-        <filter-class>controllers.Filtres.MyFilter</filter-class>
+        <filter-class>com.controllers.Filtres.MyFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -21,7 +21,7 @@
 
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>controllers.user.LogoutServlet</servlet-class>
+        <servlet-class>com.controllers.user.LogoutServlet</servlet-class>
 
 
     </servlet>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>Registration</servlet-name>
-        <servlet-class>controllers.user.RegistrationServlet</servlet-class>
+        <servlet-class>com.controllers.user.RegistrationServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -43,7 +43,7 @@
 
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>controllers.user.LoginServlet</servlet-class>
+        <servlet-class>com.controllers.user.LoginServlet</servlet-class>
 
         <init-param>
             <param-name>user</param-name>
@@ -52,7 +52,7 @@
 
         <init-param>
             <param-name>flag</param-name>
-            <param-value>send</param-value>
+            <param-value>no send</param-value>
         </init-param>
 
     </servlet>
@@ -64,7 +64,7 @@
 
     <servlet>
         <servlet-name>StartPage</servlet-name>
-        <servlet-class>controllers.TopicListServlet</servlet-class>
+        <servlet-class>com.controllers.TopicListServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -74,12 +74,22 @@
     
     <servlet>
         <servlet-name>ArticleList</servlet-name>
-        <servlet-class>controllers.ArticleListServlet</servlet-class>
+        <servlet-class>com.controllers.ArticleListServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>ArticleList</servlet-name>
         <url-pattern>/articles</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            WEB-INF/beans.xml
+        </param-value>
+    </context-param>
 
 </web-app>
