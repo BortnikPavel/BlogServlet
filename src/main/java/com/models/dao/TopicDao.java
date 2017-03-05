@@ -3,8 +3,11 @@ package com.models.dao;
 
 import com.common.exceptions.MyException;
 import com.models.connectors.ConnectionDB;
+import com.models.daoInterfaces.TopicDaoInterface;
 import com.models.pojo.Topic;
+import com.services.interfaces.TopicServiceInterface;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -14,22 +17,23 @@ import java.util.ArrayList;
  * Created by Павел on 25.02.2017.
  */
 @Component
-public class TopicDao{
+public class TopicDao implements TopicDaoInterface{
     private static Logger logger = Logger.getLogger(TopicDao.class);
-    public static Topic addTopic(Topic topic) throws MyException {
+
+    public Topic addTopic(Topic topic) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO topics (name) VALUES (?)");
             preparedStatement.setString(1,topic.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
-            return TopicDao.getTopicByName(topic.getName());
+            return getTopicByName(topic.getName());
         }catch (SQLException e){
             logger.error(e);
             throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static Topic getTopicByName(String name) throws MyException {
+    public Topic getTopicByName(String name) throws MyException {
         Topic topic = new Topic();
         try{
             Connection connection = ConnectionDB.getConnectionDB();
@@ -49,7 +53,7 @@ public class TopicDao{
         }
     }
 
-    public static void deleteTopic(Topic topic) throws MyException {
+    public void deleteTopic(Topic topic) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM topics WHERE id = ?");
@@ -60,7 +64,7 @@ public class TopicDao{
         }
     }
 
-    public static Topic getTopicById(int id) throws MyException {
+    public Topic getTopicById(int id) throws MyException {
         Topic topic = new Topic();
         try {
             Connection connection = ConnectionDB.getConnectionDB();
@@ -78,7 +82,7 @@ public class TopicDao{
         return topic;
     }
 
-    public static ArrayList<Topic> getAllTopics() throws MyException {
+    public ArrayList<Topic> getAllTopics() throws MyException {
         ArrayList<Topic> topics = new ArrayList<Topic>();
         try {
             Connection connection = ConnectionDB.getConnectionDB();

@@ -20,10 +20,18 @@
     </filter-mapping>
 
     <servlet>
+        <servlet-name>Article</servlet-name>
+        <servlet-class>com.controllers.ArticleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Article</servlet-name>
+        <url-pattern>/article</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>com.controllers.user.LogoutServlet</servlet-class>
-
-
     </servlet>
 
     <servlet-mapping>
@@ -88,7 +96,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            WEB-INF/beans.xml
+            /WEB-INF/beans.xml
         </param-value>
     </context-param>
 

@@ -4,7 +4,7 @@ import com.common.exceptions.MyException;
 import com.models.pojo.Topic;
 import com.services.interfaces.TopicServiceInterface;
 import org.apache.log4j.Logger;
-import com.services.TopicService;
+import com.services.implementation.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 

@@ -1,7 +1,8 @@
-package com.services;
+package com.services.implementation;
 
 import com.common.exceptions.MyException;
 import com.models.dao.UserDao;
+import com.models.daoInterfaces.UserDaoInterface;
 import com.models.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,12 +13,12 @@ import com.services.interfaces.UserServiceInterface;
  */
 @Component
 public class UserService implements UserServiceInterface {
-    private static User user;
+    private User user;
 
-    private UserDao userDao;
+    private UserDaoInterface userDao;
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(UserDaoInterface userDao) {
         this.userDao = userDao;
     }
 
@@ -37,9 +38,9 @@ public class UserService implements UserServiceInterface {
 
 
     public User registration(User user) throws MyException {
-        UserService.user = userDao.addUser(user);
-        if(UserService.user != null){
-            return UserService.user;
+        user = userDao.addUser(user);
+        if(user != null){
+            return user;
         }else {
             return null;
         }

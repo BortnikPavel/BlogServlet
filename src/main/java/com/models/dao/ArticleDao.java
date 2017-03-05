@@ -3,9 +3,13 @@ package com.models.dao;
 
 import com.common.exceptions.MyException;
 import com.models.connectors.ConnectionDB;
+import com.models.daoInterfaces.ArticleDaoInterface;
+import com.models.daoInterfaces.TopicDaoInterface;
+import com.models.daoInterfaces.UserDaoInterface;
 import com.models.pojo.Article;
 import com.models.pojo.Topic;
 import com.models.pojo.User;
+import com.services.interfaces.ArticleServiceInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,13 +21,19 @@ import java.util.ArrayList;
  * Created by Павел on 25.02.2017.
  */
 @Component
-public class ArticleDao {
-    private UserDao userDao;
+public class ArticleDao implements ArticleDaoInterface {
+    private UserDaoInterface userDao;
+    private TopicDaoInterface topicDao;
     private static Logger logger = Logger.getLogger(ArticleDao.class);
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(UserDaoInterface userDao) {
         this.userDao = userDao;
+    }
+
+    @Autowired
+    public void setTopicDao(TopicDaoInterface topicDao) {
+        this.topicDao = topicDao;
     }
 
     public boolean addArticle(Article article) throws MyException {
@@ -64,9 +74,9 @@ public class ArticleDao {
 
     public Article getArticleById(int id) throws MyException {
         Article article = new Article();
-        User user = new User();
+        User user;
         UserDao userDB = new UserDao();
-        Topic topic = new Topic();
+        Topic topic;
         TopicDao topicDB =new TopicDao();
         try {
             Connection connection = ConnectionDB.getConnectionDB();
@@ -149,7 +159,7 @@ public class ArticleDao {
                 if (user != null) {
                     article.setUser(user);
                 }
-                topic = TopicDao.getTopicById(resultSet.getInt(6));
+                topic = topicDao.getTopicById(resultSet.getInt(6));
                 if (topic != null) {
                     article.setTopic(topic);
                 }

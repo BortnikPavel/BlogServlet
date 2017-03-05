@@ -1,7 +1,8 @@
-package com.services;
+package com.services.implementation;
 
 import com.common.exceptions.MyException;
 import com.models.dao.ArticleDao;
+import com.models.daoInterfaces.ArticleDaoInterface;
 import com.models.pojo.Article;
 import com.services.interfaces.ArticleServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
  */
 @Component
 public class ArticleService implements ArticleServiceInterface {
-    private ArticleDao articleDao;
+    private ArticleDaoInterface articleDao;
 
     @Autowired
-    public void setArticleDao(ArticleDao articleDao) {
+    public void setArticleDao(ArticleDaoInterface articleDao) {
         this.articleDao = articleDao;
     }
 

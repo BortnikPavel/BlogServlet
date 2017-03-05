@@ -1,7 +1,8 @@
-package com.services;
+package com.services.implementation;
 
 import com.common.exceptions.MyException;
 import com.models.dao.TopicDao;
+import com.models.daoInterfaces.TopicDaoInterface;
 import com.models.pojo.Topic;
 import com.services.interfaces.TopicServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ import java.util.ArrayList;
  */
 @Component
 public class TopicService implements TopicServiceInterface {
-    private TopicDao topicDao;
+    private TopicDaoInterface topicDao;
 
     @Autowired
-    public void setTopicDao(TopicDao topicDao) {
+    public void setTopicDao(TopicDaoInterface topicDao) {
         this.topicDao = topicDao;
     }
 
     public ArrayList<Topic> getAllTopics() throws MyException {
-        return TopicDao.getAllTopics();
+        return topicDao.getAllTopics();
     }
 }

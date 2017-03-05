@@ -7,7 +7,6 @@ import com.models.pojo.User;
 import com.services.interfaces.UserServiceInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.services.UserService;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -22,10 +21,16 @@ import java.io.IOException;
  */
 public class RegistrationServlet extends HttpServlet {
     private UserServiceInterface service;
+    private EmailValidator emailValidator;
     private static Logger logger = Logger.getLogger(RegistrationServlet.class);
 
     @Autowired
-    public void setService(UserService service) {
+    public void setEmailValidator(EmailValidator emailValidator) {
+        this.emailValidator = emailValidator;
+    }
+
+    @Autowired
+    public void setService(UserServiceInterface service) {
         this.service = service;
     }
 
@@ -52,7 +57,7 @@ public class RegistrationServlet extends HttpServlet {
         String nickName = req.getParameter("nickName");
         String password = req.getParameter("password");
         try {
-            if(EmailValidator.validate(email)&&firstName!=null&&
+            if(emailValidator.validate(email)&&firstName!=null&&
                 lastName!=null&& new NickNameValidator().isValidNickName(nickName)&&password!=null) {
                 user = new User(firstName, lastName, email, nickName, password);
                 if (service.registration(user) != null) {

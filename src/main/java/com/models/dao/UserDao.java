@@ -2,8 +2,10 @@ package com.models.dao;
 
 import com.common.exceptions.MyException;
 import com.models.connectors.ConnectionDB;
+import com.models.daoInterfaces.ArticleDaoInterface;
+import com.models.daoInterfaces.CommentDaoInterface;
+import com.models.daoInterfaces.UserDaoInterface;
 import com.models.pojo.User;
-import com.services.ArticleService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,16 +17,21 @@ import java.util.ArrayList;
  * Created by Павел on 25.02.2017.
  */
 @Component
-public class UserDao{
+public class UserDao implements UserDaoInterface{
     private static Logger logger = Logger.getLogger(UserDao.class);
     private static final String SQL_ADD_USER = "INSERT INTO users " +
             "(firstname, lastname, email, nickname, password, flagmail) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private ArticleDao articleDao;
-
+    private ArticleDaoInterface articleDao;
+    private CommentDaoInterface commentDao;
 
     @Autowired
-    public void setArticleDao(ArticleDao articleDao) {
+    public void setCommentDao(CommentDaoInterface commentDao) {
+        this.commentDao = commentDao;
+    }
+
+    @Autowired
+    public void setArticleDao(ArticleDaoInterface articleDao) {
         this.articleDao = articleDao;
     }
 
@@ -101,7 +108,7 @@ public class UserDao{
     }
 
 
-    public static boolean isEmailThere(String email) throws MyException {
+    public boolean isEmailThere(String email) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
@@ -189,7 +196,7 @@ public class UserDao{
                 user.setPassword(resultSet.getString(6));
                 user.setFlagMail(resultSet.getInt(7));
                 user.setArticles(articleDao.getArticleByUserId(user.getId()));
-                user.setComments(CommentDao.getAllCommentsByUserId(user.getId()));
+                user.setComments(commentDao.getAllCommentsByUserId(user.getId()));
                 users.add(user);
             }
         }catch (SQLException e){
@@ -200,7 +207,7 @@ public class UserDao{
     }
 
 
-    public User getUser(ResultSet resultSet) throws MyException {
+    private User getUser(ResultSet resultSet) throws MyException {
         User user =  new User();
         try {
             if (resultSet.next()) {

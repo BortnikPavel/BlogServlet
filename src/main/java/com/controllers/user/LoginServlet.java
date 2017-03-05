@@ -6,7 +6,6 @@ import com.services.interfaces.UserServiceInterface;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.services.UserService;
 import com.services.mailer.Sender;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -20,9 +19,13 @@ import java.io.IOException;
  */
 @Component
 public class LoginServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(LoginServlet.class);
+    private UserServiceInterface service;
 
     @Autowired
-    private UserServiceInterface service;
+    public void setService(UserServiceInterface service) {
+        this.service = service;
+    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -30,8 +33,6 @@ public class LoginServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 config.getServletContext());
     }
-
-    private static Logger logger = Logger.getLogger(LoginServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.trace("on get LoginServlet");

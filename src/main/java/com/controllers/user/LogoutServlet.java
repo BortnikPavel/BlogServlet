@@ -4,7 +4,7 @@ import com.common.exceptions.MyException;
 import com.models.pojo.User;
 import com.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.services.UserService;
+import com.services.implementation.UserService;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletConfig;
@@ -54,6 +54,6 @@ public class LogoutServlet extends HttpServlet {
             }
             session.invalidate();
         }
-        resp.sendRedirect("/login");
+        resp.sendRedirect("/startPage");
     }
 }

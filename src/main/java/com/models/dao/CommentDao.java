@@ -3,10 +3,12 @@ package com.models.dao;
 
 import com.common.exceptions.MyException;
 import com.models.connectors.ConnectionDB;
+import com.models.daoInterfaces.CommentDaoInterface;
 import com.models.pojo.Article;
 import com.models.pojo.Comment;
 import com.models.pojo.User;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,10 +16,11 @@ import java.util.ArrayList;
 /**
  * Created by Павел on 25.02.2017.
  */
-public class CommentDao {
+@Component
+public class CommentDao implements CommentDaoInterface {
     private static Logger logger = Logger.getLogger(CommentDao.class);
 
-    public static boolean addComment(Comment comment) throws SQLException {
+    public boolean addComment(Comment comment) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO comments " +
@@ -34,11 +37,11 @@ public class CommentDao {
             }
         } catch (SQLException e) {
             logger.error(e);
-            throw new SQLException();
+            throw new MyException("Sorry, we have some problem with our system!");
         }
     }
 
-    public static Comment getCommentById(int id) throws MyException {
+    public Comment getCommentById(int id) throws MyException {
         User user;
         UserDao userDao = new UserDao();
         Article article;
@@ -65,7 +68,7 @@ public class CommentDao {
         return comment;
     }
 
-    public static ArrayList<Comment> getAllComments() throws MyException {
+    public ArrayList<Comment> getAllComments() throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments");
@@ -77,7 +80,7 @@ public class CommentDao {
         }
     }
 
-    public static ArrayList<Comment> getAllCommentsByUserId(int id) throws MyException {
+    public ArrayList<Comment> getAllCommentsByUserId(int id) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE userId = " + id);
@@ -89,10 +92,10 @@ public class CommentDao {
         }
     }
 
-    private static ArrayList<Comment> getComments(ResultSet resultSet) throws MyException {
-        User user = new User();
+    private ArrayList<Comment> getComments(ResultSet resultSet) throws MyException {
+        User user;
         UserDao userDB = new UserDao();
-        Article article = new Article();
+        Article article;
         ArticleDao articleDB = new ArticleDao();
         ArrayList<Comment> comments = new ArrayList<Comment>();
         try {
@@ -114,7 +117,7 @@ public class CommentDao {
         return comments;
     }
 
-    public static boolean deleteComment(Comment comment) throws MyException {
+    public boolean deleteComment(Comment comment) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE id = ?");

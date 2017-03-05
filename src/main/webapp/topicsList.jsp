@@ -22,9 +22,14 @@
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage.jsp">Home</a>
             <a class="nav_button" href="/startPage">Topics</a>
-            <a class="nav_button" href="/login">Login</a>
-            <a class="nav_button" href="/registration">Registration</a>
-            <a class="nav_button" href="/logout">Logout</a>
+            <c:if test="${sessionScope.user.firstName==null}">
+                <a class="nav_button" href="/login">Login</a>
+                <a class="nav_button" href="/registration">Registration</a>
+            </c:if>
+            <c:if test="${sessionScope.user.firstName!=null}">
+                <a class="nav_button" href="/logout">Logout</a>
+                <a class="nav_button" href="/">Your page</a>
+            </c:if>
         </div>
     </div>
 </div>
