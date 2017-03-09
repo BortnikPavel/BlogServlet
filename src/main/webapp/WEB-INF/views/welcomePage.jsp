@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Blog</title>
-<link href="CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -13,8 +13,8 @@
         <div id="logo_image">
         </div>
         <div id="nav_block">
-            <a class="nav_button" href="/welcomePage.jsp">Home</a>
-            <a class="nav_button" href="/startPage">Topics</a>
+            <a class="nav_button" href="/welcomePage">Home</a>
+            <a class="nav_button" href="/topic">Topics</a>
             <c:if test="${sessionScope.user.firstName==null}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>

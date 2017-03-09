@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Created by admin on 04.03.2017.
  */
 public interface CommentDaoInterface {
+    public ArrayList<Comment> getAllCommentsByArticleId(int id)throws MyException;
     public boolean addComment(Comment comment) throws MyException;
     public Comment getCommentById(int id) throws MyException;
     public ArrayList<Comment> getAllComments() throws MyException;

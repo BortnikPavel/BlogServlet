@@ -8,6 +8,8 @@ import com.models.pojo.Article;
 import com.models.pojo.Comment;
 import com.models.pojo.User;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -19,6 +21,18 @@ import java.util.ArrayList;
 @Component
 public class CommentDao implements CommentDaoInterface {
     private static Logger logger = Logger.getLogger(CommentDao.class);
+    ArticleDao articleDB;
+    private UserDao userDao;
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @Autowired
+    public void setArticleDB(ArticleDao articleDB) {
+        this.articleDB = articleDB;
+    }
 
     public boolean addComment(Comment comment) throws MyException {
         try {
@@ -92,11 +106,24 @@ public class CommentDao implements CommentDaoInterface {
         }
     }
 
+    public ArrayList<Comment> getAllCommentsByArticleId(int id) throws MyException {
+        try {
+            ArrayList<Comment> comments = new ArrayList<Comment>();
+            User user;
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM comments WHERE articleId = " + id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return getComments(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new MyException("Sorry, we have some problem with our system!");
+        }
+    }
+
     private ArrayList<Comment> getComments(ResultSet resultSet) throws MyException {
         User user;
-        UserDao userDB = new UserDao();
         Article article;
-        ArticleDao articleDB = new ArticleDao();
         ArrayList<Comment> comments = new ArrayList<Comment>();
         try {
             while (resultSet.next()) {
@@ -104,7 +131,7 @@ public class CommentDao implements CommentDaoInterface {
                 comment.setId(resultSet.getInt(1));
                 comment.setText(resultSet.getString(2));
                 comment.setDate(resultSet.getString(3));
-                user = userDB.getUserById(comment.getId());
+                user = userDao.getUserById(comment.getId());
                 comment.setUser(user);
                 article = articleDB.getArticleById(comment.getId());
                 comment.setArticle(article);

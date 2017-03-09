@@ -208,9 +208,10 @@ public class UserDao implements UserDaoInterface{
 
 
     private User getUser(ResultSet resultSet) throws MyException {
-        User user =  new User();
+        User user;
         try {
             if (resultSet.next()) {
+                user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setFirstName(resultSet.getString(2));
                 user.setLastName(resultSet.getString(3));
@@ -218,11 +219,12 @@ public class UserDao implements UserDaoInterface{
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
                 user.setFlagMail(resultSet.getInt(7));
+                return user;
             }
         }catch (SQLException e){
             logger.error(e);
             throw new MyException("Sorry, we have some problem with our system!");
         }
-        return user;
+        return null;
     }
 }

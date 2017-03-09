@@ -12,9 +12,8 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Blog</title>
-    <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="/CSS/style.css" />
-    <script type="text/javascript" src="/JS/placeholder.js"></script>
+    <link href="/CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="/CSS/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top_bar_black">
@@ -22,8 +21,8 @@
         <div id="logo_image">
         </div>
         <div id="nav_block">
-            <a class="nav_button" href="/welcomePage.jsp">Home</a>
-            <a class="nav_button" href="/startPage">Topics</a>
+            <a class="nav_button" href="/welcomePage">Home</a>
+            <a class="nav_button" href="/topic">Topics</a>
             <c:if test="${sessionScope.user.firstName==null}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>

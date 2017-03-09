@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Павел
-  Date: 25.02.2017
-  Time: 17:48
+  User: admin
+  Date: 04.03.2017
+  Time: 16:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c"
@@ -12,7 +12,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Blog</title>
-    <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top_bar_black">
@@ -20,8 +20,8 @@
         <div id="logo_image">
         </div>
         <div id="nav_block">
-            <a class="nav_button" href="/welcomePage.jsp">Home</a>
-            <a class="nav_button" href="/startPage">Topics</a>
+            <a class="nav_button" href="/welcomePage">Home</a>
+            <a class="nav_button" href="/topic">Topics</a>
             <c:if test="${sessionScope.user.firstName==null}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>
@@ -33,25 +33,16 @@
         </div>
     </div>
 </div>
-
-<div id="content_container">
-    <div id="header">
-        <div class="header_content_mainline">
-            Добро пожаловать в наш блог)
-        </div>
-        <div id="header_content_tagline">
-            Какой-то приветственный текст!
-        </div>
+<div id="content_container_article">
+    <div class="article">
+    <c:out value="${article.textArticle}"></c:out>
     </div>
-    <div id="header_lower">
-        <ol class="pills">
-            <c:forEach items="${topics}" var="topic">
-                <li><a href="/articles?id=${topic.id}"><c:out value="${topic.name}"></c:out></a></li>
-            </c:forEach>
-        </ol>
+    <c:forEach items="${comments}" var="comments">
+    <div class="comment">
+        <div class="avtor">Pasha</div>
+        <div class="comment-wrapper"><c:out value="${comments.text}"/></div>
     </div>
+    </c:forEach>
 </div>
-
-
 </body>
 </html>
