@@ -36,23 +36,23 @@
 <div id="content_container_article">
     <div class="article">
         <div class="avtor"><c:out value="${article.title}"/></div>
-    <c:out value="${article.textArticle}"></c:out>
+        <c:out value="${article.textArticle}"></c:out>
     </div>
     <c:forEach items="${comments}" var="comments">
-    <div class="comment">
-        <div class="avtor">Pasha</div>
-        <div class="comment-wrapper"><c:out value="${comments.text}"/></div>
-    </div>
+        <div class="comment">
+            <div class="avtor">Pasha</div>
+            <div class="comment-wrapper"><c:out value="${comments.text}"/></div>
+        </div>
     </c:forEach>
-<c:if test="${sessionScope.user.firstName!=null}">
-    <form action="/commentAdd" method="post" class="comment_form">
-        <input type="hidden" name="articleId" value="${article.id}">
-        <label for="comment"></label>
-        <input type="text" id="comment"
-               name="comment" class="comment_form_wrapper">
-        <input type="submit" value="Add">
-    </form>
-</c:if>
+    <c:if test="${sessionScope.user.firstName!=null}">
+        <form action="/commentAdd" method="post" class="comment_form">
+            <input type="hidden" name="articleId" value="${article.id}">
+            <label for="comment"></label>
+            <input type="text" id="comment"
+                   name="comment" class="comment_form_wrapper">
+            <input type="submit" value="Add">
+        </form>
+    </c:if>
 </div>
 </body>
 </html>

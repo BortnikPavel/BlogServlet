@@ -38,8 +38,8 @@ public class UserService implements UserServiceInterface {
 
 
     public User registration(User user) throws MyException {
-        user = userDao.addUser(user);
-        if(user != null){
+        User user1 = userDao.addUser(user);
+        if(user1 != null){
             return user;
         }else {
             return null;

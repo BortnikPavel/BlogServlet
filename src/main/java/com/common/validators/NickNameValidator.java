@@ -19,7 +19,7 @@ public class NickNameValidator {
 
 
     public boolean isValidNickName(String nick) throws MyException {
-        if(nick.length()>3&& userDao.isNickThere(nick)){
+        if(nick.length() > 3 && userDao.isNickThere(nick)){
             return true;
         }else{
             return false;

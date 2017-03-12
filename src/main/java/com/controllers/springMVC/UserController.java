@@ -19,8 +19,14 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class UserController {
-    private UserServiceInterface service;
+    private UserServiceInterface userService;
     private EmailValidator emailValidator;
+    private NickNameValidator nickNameValidator;
+
+    @Autowired
+    public void setNickNameValidator(NickNameValidator nickNameValidator) {
+        this.nickNameValidator = nickNameValidator;
+    }
 
     @Autowired
     public void setEmailValidator(EmailValidator emailValidator){
@@ -29,7 +35,7 @@ public class UserController {
 
     @Autowired
     public void setService(UserServiceInterface service) {
-        this.service = service;
+        this.userService = service;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -43,7 +49,7 @@ public class UserController {
                               @RequestParam(name = "login") String login,
                               @RequestParam(name = "password") String password){
         try {
-            User user = service.authorize(login,password);
+            User user = userService.authorize(login,password);
             if(password.length()>0 && login.length()>3 && user != null) {
                 session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60*60);
@@ -79,11 +85,20 @@ public class UserController {
                                @RequestParam("nickName") String nickName,
                                @RequestParam("password") String password){
         User user;
+        System.out.println(nickName);
         try {
+            System.out.println(emailValidator.validate(email));
+            System.out.println(firstName!=null);
+            System.out.println(lastName!=null);
+            System.out.println(nickNameValidator.isValidNickName(nickName));
+            System.out.println(password!=null);
+
             if(emailValidator.validate(email)&&firstName!=null&&
-                    lastName!=null&& new NickNameValidator().isValidNickName(nickName)&&password!=null) {
+                    lastName!=null&& nickNameValidator.isValidNickName(nickName)&&password!=null) {
                 user = new User(firstName, lastName, email, nickName, password);
-                if (service.registration(user) != null) {
+                User user1;
+                System.out.println(user1 = userService.registration(user));
+                if (user1 != null) {
                     return "login";
                 } else {
                     return "registration";

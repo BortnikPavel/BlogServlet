@@ -36,7 +36,7 @@ public class EmailValidator {
     public boolean validate(final String hex) throws MyException {
         matcher = pattern.matcher(hex);
         boolean flag = matcher.matches();
-        if(flag&& userDao.isEmailThere(hex)){
+        if(flag && userDao.isEmailThere(hex)){
             return true;
         }else {
             return false;

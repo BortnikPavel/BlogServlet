@@ -1,3 +1,5 @@
+<%@ taglib prefix="c"
+           uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Павел
@@ -33,7 +35,7 @@
         </div>
     </div>
 </div>
-<form action="/registration" method="post" id="slick-login" class="registration">
+<form action="/registration?action=registration" method="post" id="slick-login" class="registration">
     <label for= "firstName">FirstName:</label>
     <input type="text" name="firstName" id="firstName" value="" class="placeholder" placeholder="Firstname">
     <br>

@@ -44,11 +44,8 @@ public class CommentDao implements CommentDaoInterface {
             preparedStatement.setString(2, comment.getDate());
             preparedStatement.setInt(3, comment.getUser().getId());
             preparedStatement.setInt(4, comment.getArticle().getId());
-            if (preparedStatement.execute()) {
-                return true;
-            } else {
-                return false;
-            }
+            preparedStatement.execute();
+            return true;
         } catch (SQLException e) {
             logger.error(e);
             throw new MyException("Sorry, we have some problem with our system!");

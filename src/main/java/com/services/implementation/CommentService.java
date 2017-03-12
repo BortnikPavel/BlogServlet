@@ -26,4 +26,8 @@ public class CommentService implements CommentServiceInterface {
     public ArrayList<Comment> getCommentByArticleId(int id) throws MyException {
         return commentDao.getAllCommentsByArticleId(id);
     }
+
+    public boolean addComment(Comment comment) throws MyException {
+        return commentDao.addComment(comment);
+    }
 }

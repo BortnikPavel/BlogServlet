@@ -26,6 +26,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <mvc:resources mapping="/CSS/**" location="/CSS/" cache-period="10"></mvc:resources>
+    <mvc:resources mapping="/CSS/**" location="/CSS/" cache-period="10"/>
+    <mvc:resources mapping="/images/**" location="/images/" cache-period="10"/>
 
 </beans>

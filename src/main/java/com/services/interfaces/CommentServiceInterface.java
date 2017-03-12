@@ -10,4 +10,5 @@ import java.util.ArrayList;
  */
 public interface CommentServiceInterface {
     public ArrayList<Comment> getCommentByArticleId(int id) throws MyException;
+    public boolean addComment(Comment comment) throws MyException;
 }

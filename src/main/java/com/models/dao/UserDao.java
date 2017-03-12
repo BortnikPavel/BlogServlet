@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class UserDao implements UserDaoInterface{
     private static Logger logger = Logger.getLogger(UserDao.class);
     private static final String SQL_ADD_USER = "INSERT INTO users " +
-            "(firstname, lastname, email, nickname, password, flagmail) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "(firstname, lastname, email, nickname, password) " +
+            "VALUES (?, ?, ?, ?, ?)";
     private ArticleDaoInterface articleDao;
     private CommentDaoInterface commentDao;
 
@@ -46,7 +46,7 @@ public class UserDao implements UserDaoInterface{
             preparedStatement.setString(3,user.getEmail());
             preparedStatement.setString(4,user.getNickName());
             preparedStatement.setString(5,user.getPassword());
-            preparedStatement.setInt(6,user.getNickName().hashCode());
+            preparedStatement.execute();
             return getUserByLogAndPass(user.getNickName(), user.getPassword());
         }catch (SQLException e){
             logger.error(e);
@@ -129,13 +129,13 @@ public class UserDao implements UserDaoInterface{
     public boolean isNickThere(String nickName) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE nickname = ?");
             preparedStatement.setString(1,nickName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                return true;
-            } else {
+            if (resultSet.next()) {
                 return false;
+            } else {
+                return true;
             }
         }catch (SQLException e){
             logger.error(e);
@@ -218,7 +218,6 @@ public class UserDao implements UserDaoInterface{
                 user.setEmail(resultSet.getString(4));
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
-                user.setFlagMail(resultSet.getInt(7));
                 return user;
             }
         }catch (SQLException e){
