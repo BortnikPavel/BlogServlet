@@ -36,6 +36,16 @@ public class UserService implements UserServiceInterface {
         return userDao.updateFlag(user);
     }
 
+    @Override
+    public User getUser(int id) throws MyException {
+        return userDao.getUserById(id);
+    }
+
+    @Override
+    public User updateUser(User user) throws MyException {
+        return userDao.updateUser(user);
+    }
+
 
     public User registration(User user) throws MyException {
         User user1 = userDao.addUser(user);

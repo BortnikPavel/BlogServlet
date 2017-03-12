@@ -10,4 +10,6 @@ public interface UserServiceInterface {
     public User authorize(String log, String pass) throws MyException;
     public User registration(User user) throws MyException;
     public boolean updateFlag(User user) throws MyException;
+    User getUser(int id) throws MyException;
+    User updateUser(User user) throws MyException;
 }

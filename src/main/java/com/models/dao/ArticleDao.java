@@ -57,11 +57,11 @@ public class ArticleDao implements ArticleDaoInterface {
         return false;
     }
 
-    public boolean deleteArticle(Article article) throws MyException {
+    public boolean deleteArticle(int id) throws MyException {
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM articles WHERE id = ?");
-            preparedStatement.setInt(1, article.getId());
+            preparedStatement.setInt(1, id);
             if(preparedStatement.execute()){
                 return true;
             }

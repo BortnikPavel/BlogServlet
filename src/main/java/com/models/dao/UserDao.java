@@ -163,7 +163,7 @@ public class UserDao implements UserDaoInterface{
 
 
     public User getUserById(int id) throws MyException {
-        User user = new User();
+        User user;
         try {
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement(

@@ -29,4 +29,13 @@ public class ArticleService implements ArticleServiceInterface {
     public ArrayList<Article> getArticlesByTopicId(int id) throws MyException {
         return articleDao.getArticleByTopicId(id);
     }
+
+    @Override
+    public ArrayList<Article> getArticleByUserId(int userId) throws MyException {
+        return articleDao.getArticleByUserId(userId);
+    }
+
+    public boolean deleteArticle(int id) throws MyException{
+        return articleDao.deleteArticle(id);
+    }
 }

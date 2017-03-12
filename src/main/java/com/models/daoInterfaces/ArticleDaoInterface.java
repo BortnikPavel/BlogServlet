@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public interface ArticleDaoInterface {
     public boolean addArticle(Article article) throws MyException;
-    public boolean deleteArticle(Article article) throws MyException;
+    public boolean deleteArticle(int id) throws MyException;
     public Article getArticleById(int id) throws MyException;
     public ArrayList<Article> getArticleByUserId(int userId) throws MyException;
     public ArrayList<Article> getArticleByTopicId(int topicId) throws MyException;

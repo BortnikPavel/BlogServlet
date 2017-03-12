@@ -11,4 +11,6 @@ import java.util.ArrayList;
 public interface ArticleServiceInterface {
     public Article getArticleById(int id) throws MyException;
     public ArrayList<Article> getArticlesByTopicId(int id) throws MyException;
+    public ArrayList<Article> getArticleByUserId(int userId) throws MyException;
+    boolean deleteArticle(int id) throws MyException;
 }

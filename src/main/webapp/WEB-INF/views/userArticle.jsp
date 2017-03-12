@@ -21,15 +21,9 @@
         </div>
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
-            <a class="nav_button" href="/topic">Topics</a>
-            <c:if test="${sessionScope.user.firstName==null}">
-                <a class="nav_button" href="/login">Login</a>
-                <a class="nav_button" href="/registration">Registration</a>
-            </c:if>
-            <c:if test="${sessionScope.user.firstName!=null}">
-                <a class="nav_button" href="/logout">Logout</a>
-                <a class="nav_button" href="/myPage">Your page</a>
-            </c:if>
+            <a class="nav_button" href="/editProfile">Edit my profile</a>
+            <a class="nav_button" href="/userArticles">My articles</a>
+            <a class="nav_button" href="/logout">Logout</a>
         </div>
     </div>
 </div>

@@ -29,7 +29,7 @@
             </c:if>
             <c:if test="${sessionScope.user.firstName!=null}">
                 <a class="nav_button" href="/logout">Logout</a>
-                <a class="nav_button" href="/">Your page</a>
+                <a class="nav_button" href="/myPage">Your page</a>
             </c:if>
         </div>
     </div>
