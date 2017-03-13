@@ -16,6 +16,7 @@
             <a class="nav_button" href="/welcomePage">Home</a>
             <a class="nav_button" href="/editProfile">Edit my profile</a>
             <a class="nav_button" href="/userArticles">My articles</a>
+            <a class="nav_button" href="/addNewArticle">Add article</a>
             <a class="nav_button" href="/logout">Logout</a>
         </div>
     </div>

@@ -23,31 +23,17 @@
             <a class="nav_button" href="/welcomePage">Home</a>
             <a class="nav_button" href="/editProfile">Edit my profile</a>
             <a class="nav_button" href="/userArticles">My articles</a>
-            <a class="nav_button" href="/addNewArticle">Add article</a>
             <a class="nav_button" href="/logout">Logout</a>
         </div>
     </div>
 </div>
 <div id="content_container_article">
-    <div class="article">
-        <div class="avtor"><c:out value="${article.title}"/></div>
-        <c:out value="${article.textArticle}"></c:out>
-    </div>
-    <c:forEach items="${comments}" var="comments">
-        <div class="comment">
-            <div class="avtor">Pasha</div>
-            <div class="comment-wrapper"><c:out value="${comments.text}"/></div>
-        </div>
-    </c:forEach>
-    <c:if test="${sessionScope.user.firstName!=null}">
-        <form action="/commentAdd" method="post" class="comment_form">
-            <input type="hidden" name="articleId" value="${article.id}">
-            <label for="comment"></label>
-            <textarea type="text" id="comment"
-                      name="comment" class="comment_form_wrapper"></textarea>
-            <input type="submit" value="Add">
-        </form>
-    </c:if>
+    <form action="/addNewArticle" method="post" class="article">
+        <input type="text" name="title" class="avtor">
+        <textarea type="text" id="comment"
+                  name="comment" class="comment_form_wrapper"></textarea>
+        <input type="submit" value="Add" class="button25">
+    </form>
 </div>
 </body>
 </html>
