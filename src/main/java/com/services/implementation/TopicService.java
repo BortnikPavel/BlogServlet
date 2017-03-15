@@ -25,4 +25,8 @@ public class TopicService implements TopicServiceInterface {
     public ArrayList<Topic> getAllTopics() throws MyException {
         return topicDao.getAllTopics();
     }
+
+    public Topic getTopicByName(String name) throws MyException {
+        return topicDao.getTopicByName(name);
+    }
 }

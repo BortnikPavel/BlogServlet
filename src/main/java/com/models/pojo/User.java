@@ -12,14 +12,14 @@ public class User {
     private String email;
     private String nickName;
     private String password;
-    private int flagMail;
+    private String role;
 
-    public int getFlagMail() {
-        return flagMail;
+    public String getRole() {
+        return role;
     }
 
-    public void setFlagMail(int flagMail) {
-        this.flagMail = flagMail;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     private ArrayList<Article> articles;

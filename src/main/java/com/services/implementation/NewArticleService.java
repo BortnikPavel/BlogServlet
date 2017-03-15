@@ -3,6 +3,7 @@ package com.services.implementation;
 import com.common.exceptions.MyException;
 import com.models.daoInterfaces.NewArticleDaoInterface;
 import com.models.pojo.NewArticle;
+import com.services.interfaces.NewArticleServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Created by admin on 13.03.2017.
  */
 @Component
-public class NewArticleService implements NewArticleDaoInterface {
+public class NewArticleService implements NewArticleServiceInterface {
     NewArticleDaoInterface newArticleDao;
 
     @Autowired

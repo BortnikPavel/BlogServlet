@@ -11,4 +11,5 @@ import java.util.ArrayList;
  */
 public interface TopicServiceInterface {
     public ArrayList<Topic> getAllTopics() throws MyException;
+    public Topic getTopicByName(String name) throws MyException;
 }

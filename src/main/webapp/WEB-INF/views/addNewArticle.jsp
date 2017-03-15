@@ -21,7 +21,7 @@
         </div>
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
-            <a class="nav_button" href="/editProfile">Edit my profile</a>
+            <a class="nav_button" href="/editProfile">Edit profile</a>
             <a class="nav_button" href="/userArticles">My articles</a>
             <a class="nav_button" href="/logout">Logout</a>
         </div>
@@ -29,9 +29,14 @@
 </div>
 <div id="content_container_article">
     <form action="/addNewArticle" method="post" class="article">
-        <input type="text" name="title" class="avtor">
-        <textarea type="text" id="comment"
-                  name="comment" class="comment_form_wrapper"></textarea>
+        <input type="text" name="title" class="avtor" placeholder="Write title">
+        <textarea type="text" id="text"
+                  name="text" class="comment_form_wrapper" placeholder="Write text article"></textarea>
+        <select name="menu" size="1">
+            <c:forEach items="${topics}" var="topics">
+            <option value="${topics.name}"><c:out value="${topics.name}"/></option>
+            </c:forEach>
+        </select>
         <input type="submit" value="Add" class="button25">
     </form>
 </div>

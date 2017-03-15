@@ -60,7 +60,7 @@ public class UserDao implements UserDaoInterface{
             Connection connection = ConnectionDB.getConnectionDB();
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET flagmail = ? " +
                     "where id = ?");
-            preparedStatement.setInt(1, user.getFlagMail());
+            preparedStatement.setInt(1, user.getId());
             preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
             return true;
@@ -194,7 +194,7 @@ public class UserDao implements UserDaoInterface{
                 user.setEmail(resultSet.getString(4));
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
-                user.setFlagMail(resultSet.getInt(7));
+                //user.setFlagMail(resultSet.getInt(7));
                 user.setArticles(articleDao.getArticleByUserId(user.getId()));
                 user.setComments(commentDao.getAllCommentsByUserId(user.getId()));
                 users.add(user);

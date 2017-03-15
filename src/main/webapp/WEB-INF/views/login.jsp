@@ -34,7 +34,7 @@
         </div>
     </div>
 </div>
-<form action="/login?action=login" method="post" id="slick-login">
+<form action="/j_spring_security_check" method="post" id="slick-login">
     <label for="login">Login:</label><input type="text" id="login" name="login" class="placeholder" placeholder="admin@example.com">
     <label for="password">Password:</label><input type="password" id="password" name="password" class="placeholder" placeholder="Password">
     <input type="submit" value="Login">
