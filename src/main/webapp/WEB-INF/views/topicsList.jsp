@@ -5,6 +5,7 @@
   Time: 17:48
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,6 +16,7 @@
     <link href="../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<sec:authentication var="user" property="principal" />
 <div id="top_bar_black">
     <div id="logo_container">
         <div id="logo_image">
@@ -22,11 +24,11 @@
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
             <a class="nav_button" href="/topic">Topics</a>
-            <c:if test="${sessionScope.user.firstName==null}">
+            <c:if test="${user == null}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>
             </c:if>
-            <c:if test="${sessionScope.user.firstName!=null}">
+            <c:if test="${user != null}">
                 <a class="nav_button" href="/logout">Logout</a>
                 <a class="nav_button" href="/myPage">Your page</a>
             </c:if>
@@ -46,7 +48,7 @@
     <div id="header_lower">
         <ol class="pills">
             <c:forEach items="${topics}" var="topic">
-                <li><a href="/articles?id=${topic.id}"><c:out value="${topic.name}"></c:out></a></li>
+                <li><a class="nuv_button" href="/articles?id=${topic.id}"><c:out value="${topic.name}"></c:out></a></li>
             </c:forEach>
         </ol>
     </div>

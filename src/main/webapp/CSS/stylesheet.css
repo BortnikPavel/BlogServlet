@@ -92,6 +92,11 @@ body {
 	text-decoration:none;
 }
 
+.nuv_button{
+	color: #a7a7a7;
+	text-decoration: none;
+}
+
 .nav_button:hover {
 	text-decoration:none;
 	background-color:#333333;

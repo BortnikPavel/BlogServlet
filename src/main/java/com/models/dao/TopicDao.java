@@ -18,6 +18,7 @@ import java.util.ArrayList;
  */
 @Component
 public class TopicDao implements TopicDaoInterface{
+
     private static Logger logger = Logger.getLogger(TopicDao.class);
 
     public Topic addTopic(Topic topic) throws MyException {

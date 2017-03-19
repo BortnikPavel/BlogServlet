@@ -33,14 +33,14 @@ public class NewArticleController {
         this.topicService = topicService;
     }
 
-    @RequestMapping(value = "/addNewArticle", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/addNewArticle", method = RequestMethod.GET)
     public ModelAndView addNewArticle(ModelAndView modelAndView) throws MyException {
-        modelAndView.setViewName("addNewArticle");
+        modelAndView.setViewName("user/addNewArticle");
         modelAndView.addObject("topics", topicService.getAllTopics());
         return modelAndView;
     }
 
-    @RequestMapping(value = "/addNewArticle", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/addNewArticle", method = RequestMethod.POST)
     public String addNewArticle(@RequestParam(name = "title") String title,
                                       @RequestParam(name = "text") String text,
                                       HttpSession session,

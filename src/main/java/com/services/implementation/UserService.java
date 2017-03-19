@@ -55,4 +55,8 @@ public class UserService implements UserServiceInterface {
             return null;
         }
     }
+
+    public User getUserByName(String nickname)throws MyException  {
+        return userDao.getUserByName(nickname);
+    }
 }

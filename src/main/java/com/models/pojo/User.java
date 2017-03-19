@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Павел on 25.02.2017.
  */
+
 public class User {
     private int id;
     private String firstName;
@@ -13,6 +14,19 @@ public class User {
     private String nickName;
     private String password;
     private String role;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 
     public String getRole() {
         return role;

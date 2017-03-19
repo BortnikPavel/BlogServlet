@@ -12,4 +12,5 @@ public interface UserServiceInterface {
     public boolean updateFlag(User user) throws MyException;
     User getUser(int id) throws MyException;
     User updateUser(User user) throws MyException;
+    public User getUserByName(String nickname) throws MyException;
 }

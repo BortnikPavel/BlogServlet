@@ -18,4 +18,5 @@ public interface UserDaoInterface {
     public User getUserByLogAndPass(String nickname, String password) throws MyException;
     public User getUserById(int id) throws MyException;
     public ArrayList getAllUsers() throws MyException;
+    public User getUserByName(String nickname) throws MyException;
 }

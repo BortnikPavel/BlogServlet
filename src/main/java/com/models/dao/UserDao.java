@@ -218,6 +218,7 @@ public class UserDao implements UserDaoInterface{
                 user.setEmail(resultSet.getString(4));
                 user.setNickName(resultSet.getString(5));
                 user.setPassword(resultSet.getString(6));
+                user.setRole(resultSet.getString(7));
                 return user;
             }
         }catch (SQLException e){
@@ -225,5 +226,20 @@ public class UserDao implements UserDaoInterface{
             throw new MyException("Sorry, we have some problem with our system!");
         }
         return null;
+    }
+
+    public User getUserByName(String nickname) throws MyException {
+        User user;
+        try {
+            Connection connection = ConnectionDB.getConnectionDB();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE nickname = ?" );
+            preparedStatement.setString(1, nickname);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            user = getUser(resultSet);
+        }catch (SQLException e){
+            logger.error(e);
+            throw new MyException("Sorry, we have some problem with our system!");
+        }
+        return user;
     }
 }

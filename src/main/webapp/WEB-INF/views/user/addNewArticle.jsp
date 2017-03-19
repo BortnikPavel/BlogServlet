@@ -12,7 +12,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Blog</title>
-    <link href="../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="../../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top_bar_black">
