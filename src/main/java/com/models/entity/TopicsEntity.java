@@ -17,6 +17,7 @@ public class TopicsEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -35,7 +36,7 @@ public class TopicsEntity {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     public HashSet<ArticlesEntity> getArticlesEntities() {
         return articlesEntities;
     }
@@ -44,7 +45,7 @@ public class TopicsEntity {
         this.articlesEntities = articlesEntities;
     }
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     public HashSet<NewArticlesEntity> getNewArticlesEntities() {
         return newArticlesEntities;
     }

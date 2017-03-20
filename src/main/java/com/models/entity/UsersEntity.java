@@ -23,6 +23,7 @@ public class UsersEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -91,7 +92,7 @@ public class UsersEntity {
         this.role = role;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     public HashSet<ArticlesEntity> getArticlesEntities() {
         return articlesEntities;
     }
@@ -100,7 +101,7 @@ public class UsersEntity {
         this.articlesEntities = articlesEntities;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     public HashSet<CommentsEntity> getCommentsEntities() {
         return commentsEntities;
     }
@@ -109,7 +110,7 @@ public class UsersEntity {
         this.commentsEntities = commentsEntities;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     public HashSet<NewArticlesEntity> getNewArticlesEntities() {
         return newArticlesEntities;
     }
