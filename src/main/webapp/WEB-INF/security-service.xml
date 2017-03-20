@@ -8,9 +8,9 @@
 
     <http>
         <csrf disabled="true"/>
-        <intercept-url pattern="/login" access="hasRole('ROLE_ANONYMOUS')"/>
-        <intercept-url pattern="/registration" access="hasRole('ROLE_ANONYMOUS')"/>
-        <intercept-url pattern="/*" access="hasRole('ROLE_ANONYMOUS')" />
+        <intercept-url pattern="/login" access="hasRole('ROLE_ANONYMOUS') or hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/registration" access="hasRole('ROLE_ANONYMOUS') or hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/*" access="hasRole('ROLE_ANONYMOUS') or hasRole('ROLE_USER')" />
         <intercept-url pattern="/user/*" access="hasRole('ROLE_USER')"/>
 
         <form-login login-page="/login"

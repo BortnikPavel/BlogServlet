@@ -24,7 +24,8 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="User" />
+          <factory-entry name="User" value="713c7f0d-eecc-49c0-a104-e3ed4f7a6100" />
+          <factory-entry name="noname-a.xml@0" value="713c7f0d-eecc-49c0-a104-e3ed4f7a6100" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/../../src/main/resources/persistence.xml" />
       </configuration>
