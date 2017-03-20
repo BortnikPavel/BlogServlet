@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class UserDao implements UserDaoInterface{
     private static Logger logger = Logger.getLogger(UserDao.class);
     private static final String SQL_ADD_USER = "INSERT INTO users " +
-            "(firstname, lastname, email, nickname, password) " +
-            "VALUES (?, ?, ?, ?, ?)";
+            "(firstname, lastname, email, nickname, password, role) " +
+            "VALUES (?, ?, ?, ?, ?, ?)";
     private ArticleDaoInterface articleDao;
     private CommentDaoInterface commentDao;
 
@@ -46,6 +46,7 @@ public class UserDao implements UserDaoInterface{
             preparedStatement.setString(3,user.getEmail());
             preparedStatement.setString(4,user.getNickName());
             preparedStatement.setString(5,user.getPassword());
+            preparedStatement.setString(6,user.getRole());
             preparedStatement.execute();
             return getUserByLogAndPass(user.getNickName(), user.getPassword());
         }catch (SQLException e){

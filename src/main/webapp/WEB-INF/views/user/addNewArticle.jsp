@@ -21,14 +21,14 @@
         </div>
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
-            <a class="nav_button" href="/editProfile">Edit profile</a>
-            <a class="nav_button" href="/userArticles">My articles</a>
+            <a class="nav_button" href="/user/editProfile">Edit profile</a>
+            <a class="nav_button" href="/user/userArticles">My articles</a>
             <a class="nav_button" href="/logout">Logout</a>
         </div>
     </div>
 </div>
 <div id="content_container_article">
-    <form action="/addNewArticle" method="post" class="article">
+    <form action="/user/addNewArticle" method="post" class="article">
         <input type="text" name="title" class="avtor" placeholder="Write title">
         <textarea type="text" id="text"
                   name="text" class="comment_form_wrapper" placeholder="Write text article"></textarea>

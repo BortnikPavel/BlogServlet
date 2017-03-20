@@ -3,22 +3,18 @@ package com.controllers.springMVC;
 import com.common.exceptions.MyException;
 import com.common.validators.EmailValidator;
 import com.common.validators.NickNameValidator;
-import com.models.pojo.Article;
 import com.models.pojo.User;
-import com.services.interfaces.ArticleServiceInterface;
 import com.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.soap.SOAPBinding;
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 /**
  * Created by admin on 07.03.2017.
@@ -94,7 +90,7 @@ public class UserController {
         try {
             if(emailValidator.validate(email)&&firstName!=null&&
                     lastName!=null&& nickNameValidator.isValidNickName(nickName)&&password!=null) {
-                user = new User(firstName, lastName, email, nickName, password);
+                user = new User(firstName, lastName, email, nickName, password, "ROLE_USER");
                 if (userService.registration(user) != null) {
                     return "login";
                 } else {
@@ -108,22 +104,24 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/myPage", method = RequestMethod.GET)
+    @RequestMapping(value = "user/myPage", method = RequestMethod.GET)
     public String myPage(){
-        return "myPage";
+        return "user/myPage";
     }
 
-    @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "user/editProfile", method = RequestMethod.GET)
     public ModelAndView editProfile(ModelAndView modelAndView,
                                     HttpSession session) throws MyException {
-        modelAndView.setViewName("editProfile");
-        User user1 = (User)session.getAttribute("user");
-        User user = userService.getUser(user1.getId());
+        modelAndView.setViewName("user/editProfile");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String nickName = authentication.getName();
+        User user = userService.getUserByName(nickName);
         modelAndView.addObject("user", user);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+    @RequestMapping(value = "user/editProfile", method = RequestMethod.POST)
     public String newProfile(HttpSession session,
                              @RequestParam("oldEmail") String oldEmail,
                              @RequestParam("oldName") String oldName,
@@ -135,24 +133,17 @@ public class UserController {
                              @RequestParam("password") String password) throws MyException {
         if((emailValidator.validate(email)||email.equals(oldEmail))&&firstName!=null&&
                 lastName!=null&& (nickNameValidator.isValidNickName(nickName)||nickName.equals(oldName))&&password!=null){
-            System.out.println((emailValidator.validate(email)||email.equals(oldEmail)));
-            System.out.println(firstName!=null);
-            System.out.println(lastName!=null);
-            System.out.println((nickNameValidator.isValidNickName(nickName)||nickName.equals(oldName)));
-            System.out.println(password!=null);
-
-            //session.invalidate();
-            User user = new User(firstName, lastName, email, nickName, password);
+            User user = new User(firstName, lastName, email, nickName, password, "ROLE_USER");
             user.setId(id);
             System.out.println(userService.updateUser(user) != null);
             if(userService.updateUser(user) != null){
                 session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60*60);
-                return "/myPage";
+                return "user/myPage";
             }
-            return "/editProfile";
+            return "user/editProfile";
         }else {
-            return "/editProfile";
+            return "user/editProfile";
         }
     }
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -8,6 +9,7 @@
 </head>
 
 <body>
+<sec:authentication property="principal" var="user"/>
 <div id="top_bar_black">
     <div id="logo_container">
         <div id="logo_image">
@@ -15,13 +17,13 @@
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
             <a class="nav_button" href="/topic">Topics</a>
-            <c:if test="${sessionScope.user.firstName==null}">
+            <c:if test="${user=='guest'}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>
             </c:if>
-            <c:if test="${sessionScope.user.firstName!=null}">
+            <c:if test="${user!='guest'}">
                 <a class="nav_button" href="/logout">Logout</a>
-                <a class="nav_button" href="/myPage">Your page</a>
+                <a class="nav_button" href="/user/myPage">Your page</a>
             </c:if>
 	    </div>
     </div>

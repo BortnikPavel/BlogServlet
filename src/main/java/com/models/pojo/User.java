@@ -54,13 +54,13 @@ public class User {
         this.comments = comments;
     }
 
-    public User(String firstName, String lastName, String email, String nickName, String password) {
-        id = 0;
+    public User(String firstName, String lastName, String email, String nickName, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.nickName = nickName;
         this.password = password;
+        this.role = role;
     }
 
     public User() {
