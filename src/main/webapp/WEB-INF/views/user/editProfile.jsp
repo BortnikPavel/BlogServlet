@@ -1,5 +1,6 @@
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Павел
@@ -12,28 +13,29 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Blog</title>
-    <link href="../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../CSS/style.css" />
+    <link href="../../../CSS/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../CSS/style.css" />
     <script type="text/javascript" src="/JS/placeholder.js"></script>
 </head>
 <body>
+<%--<sec:authentication var="user" property="principal" />--%>
 <div id="top_bar_black">
     <div id="logo_container">
         <div id="logo_image">
         </div>
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
-            <a class="nav_button" href="/editProfile">Edit my profile</a>
-            <a class="nav_button" href="/userArticles">My articles</a>
-            <a class="nav_button" href="/addNewArticle">Add article</a>
+            <a class="nav_button" href="/user/editProfile">Edit my profile</a>
+            <a class="nav_button" href="/user/userArticles">My articles</a>
+            <a class="nav_button" href="/user/addNewArticle">Add article</a>
             <a class="nav_button" href="/logout">Logout</a>
         </div>
     </div>
 </div>
-<form action="/editProfile" method="post" id="slick-login" class="registration">
-    <input type="hidden" name="oldName" value="${sessionScope.user.nickName}">
-    <input type="hidden" name="oldEmail" value="${sessionScope.user.email}">
-    <input type="hidden" name="id" value="${sessionScope.user.id}">
+<form action="/user/editProfile" method="post" id="slick-login" class="registration">
+    <input type="hidden" name="oldName" value="${user.nickName}">
+    <input type="hidden" name="oldEmail" value="${user.email}">
+    <input type="hidden" name="id" value="${user.id}">
     <label for= "firstName">FirstName:</label>
     <input type="text" name="firstName" id="firstName" value="${user.firstName}" class="placeholder" placeholder="Firstname">
     <br>

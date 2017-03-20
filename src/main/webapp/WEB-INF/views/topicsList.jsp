@@ -24,13 +24,13 @@
         <div id="nav_block">
             <a class="nav_button" href="/welcomePage">Home</a>
             <a class="nav_button" href="/topic">Topics</a>
-            <c:if test="${user == null}">
+            <c:if test="${user == 'guest'}">
                 <a class="nav_button" href="/login">Login</a>
                 <a class="nav_button" href="/registration">Registration</a>
             </c:if>
-            <c:if test="${user != null}">
+            <c:if test="${user != 'guest'}">
                 <a class="nav_button" href="/logout">Logout</a>
-                <a class="nav_button" href="/myPage">Your page</a>
+                <a class="nav_button" href="/user/myPage">Your page</a>
             </c:if>
         </div>
     </div>

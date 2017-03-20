@@ -6,9 +6,11 @@ import com.models.pojo.Comment;
 import com.models.pojo.User;
 import com.services.interfaces.ArticleServiceInterface;
 import com.services.interfaces.CommentServiceInterface;
+import com.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,12 @@ import java.util.ArrayList;
 public class ArticleController {
     private ArticleServiceInterface articleService;
     private CommentServiceInterface commentService;
+    private UserServiceInterface userService;
+
+    @Autowired
+    public void setUserService(UserServiceInterface userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setCommentService(CommentServiceInterface commentService) {
@@ -48,7 +56,7 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "article", method = RequestMethod.GET)
+    @RequestMapping(value = "/article", method = RequestMethod.GET)
     public ModelAndView showArticle(@RequestParam(name = "id") String param){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("article");
@@ -63,13 +71,15 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/userArticles", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userArticles", method = RequestMethod.GET)
     public ModelAndView userArticles(HttpSession session,
-                                     ModelAndView modelAndView){
-        User user = (User)session.getAttribute("user");
+                                     ModelAndView modelAndView) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String nickName = authentication.getName();
         try {
+            User user = userService.getUserByName(nickName);
             ArrayList<Article> articles = articleService.getArticleByUserId(user.getId());
-            modelAndView.setViewName("userArticles");
+            modelAndView.setViewName("user/userArticles");
             modelAndView.addObject("articles",articles);
         } catch (MyException e) {
             e.printStackTrace();
@@ -77,10 +87,10 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "userArticle", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userArticle", method = RequestMethod.GET)
     public ModelAndView showUserArticle(@RequestParam(name = "id") int param){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("userArticle");
+        modelAndView.setViewName("user/userArticle");
         try {
             Article article = articleService.getArticleById(param);
             ArrayList<Comment> comments = commentService.getCommentByArticleId(article.getId());
@@ -92,15 +102,17 @@ public class ArticleController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/deleteArticle", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/deleteArticle", method = RequestMethod.GET)
     public ModelAndView deleteArticle(@RequestParam(name = "id") int param,
                               HttpSession session,
                               ModelAndView modelAndView){
         try {
             articleService.deleteArticle(param);
-            User user = (User)session.getAttribute("user");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String nickName = authentication.getName();
+            User user = userService.getUserByName(nickName);
             ArrayList<Article> articles = articleService.getArticleByUserId(user.getId());
-            modelAndView.setViewName("delete");
+            modelAndView.setViewName("user/delete");
             modelAndView.addObject("articles",articles);
             return modelAndView;
         } catch (MyException e) {
